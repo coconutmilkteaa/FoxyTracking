@@ -567,13 +567,32 @@ input[type=range].grad-slider::-moz-range-thumb{
 .entry-row{
   display:flex;align-items:flex-start;gap:12px;
   padding:12px 0;border-bottom:1px solid var(--glass-bd);
+  position:relative;
 }
 .entry-row:last-child{border-bottom:none;}
+.entry-row:hover .entry-actions{opacity:1;}
 .entry-date{
   font-family:var(--mono);font-size:10px;letter-spacing:.08em;
   color:var(--mu);flex-shrink:0;min-width:78px;padding-top:2px;
+  cursor:pointer;transition:color .15s;
 }
-.entry-body{flex:1;}
+.entry-date:hover{color:var(--a1);}
+.entry-actions{
+  display:flex;gap:4px;
+  opacity:0;transition:opacity .2s;
+  flex-shrink:0;
+}
+.entry-act-btn{
+  width:24px;height:24px;border-radius:6px;
+  background:transparent;border:1px solid var(--bd);
+  color:var(--mu);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-family:var(--mono);
+  transition:all .15s;padding:0;
+}
+.entry-act-btn:hover{border-color:var(--a1);color:var(--a1);background:var(--a1soft);}
+.entry-act-btn.del:hover{border-color:#e57373;color:#e57373;background:rgba(229,115,115,0.08);}
+.entry-body{flex:1;min-width:0;}
 .entry-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px;}
 .entry-mini-chip{
   font-family:var(--mono);font-size:9px;letter-spacing:.05em;
@@ -590,6 +609,39 @@ input[type=range].grad-slider::-moz-range-thumb{
   color:var(--tx);margin-top:4px;line-height:1.5;
 }
 .entry-empty{font-family:var(--script);font-style:italic;font-size:13px;color:var(--mu);text-align:center;padding:1rem 0;}
+
+/* date picker for daily log */
+.log-date-picker{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:14px;padding:8px 10px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:10px;
+}
+.log-date-picker.editing{border-color:var(--a1);background:var(--a1soft);}
+.log-date-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  color:var(--mu);
+}
+.log-date-input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  color:var(--tx);cursor:pointer;
+  padding:2px 4px;
+}
+.log-date-input::-webkit-calendar-picker-indicator{
+  filter:invert(0.5);cursor:pointer;opacity:.6;
+}
+.log-date-input::-webkit-calendar-picker-indicator:hover{opacity:1;}
+.log-today-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  background:transparent;border:1px solid var(--bd);color:var(--mu);
+  border-radius:6px;padding:4px 9px;cursor:pointer;transition:all .15s;
+}
+.log-today-btn:hover{border-color:var(--a1);color:var(--a1);}
+.log-editing-banner{
+  font-family:var(--script);font-style:italic;font-size:11px;
+  color:var(--a1);
+}
 
 /* dev seeder button */
 .seed-btn{
@@ -830,6 +882,12 @@ input[type=range].grad-slider::-moz-range-thumb{
         </div>
         <hr class="card-rule"/>
 
+        <div class="log-date-picker" id="logDatePicker">
+          <span class="log-date-label">// DATE</span>
+          <input type="date" class="log-date-input" id="logDate" onchange="changeLogDate()"/>
+          <button class="log-today-btn" id="logTodayBtn" onclick="jumpToToday()">TODAY</button>
+        </div>
+
         <div class="log-block"><div class="log-block-label">// MOOD</div><div class="chip-row" id="moodTags"></div></div>
         <div class="log-block"><div class="log-block-label">// FLOW LEVEL</div><div class="chip-row" id="flowTags"></div></div>
         <div class="log-block"><div class="log-block-label">// CRAMPS</div><div class="chip-row" id="crampTags"></div></div>
@@ -844,7 +902,7 @@ input[type=range].grad-slider::-moz-range-thumb{
           <div class="fake-area" id="logNotes" contenteditable="true" data-ph="anything to remember..."></div>
         </div>
 
-        <button class="sbtn" onclick="saveLog()">+ SAVE TODAY'S ENTRY</button>
+        <button class="sbtn" id="saveLogBtn" onclick="saveLog()">+ SAVE TODAY'S ENTRY</button>
       </div>
 
       <!-- Moodboard -->
@@ -1218,29 +1276,106 @@ function renderCal(){
 
 function calNav(dir){calMo+=dir;if(calMo>11){calMo=0;calYear++;}if(calMo<0){calMo=11;calYear--;}renderCal();}
 
+// current date being edited in daily log card (defaults to today)
+let currentLogDate=new Date().toISOString().slice(0,10);
+function getLogDate(){return currentLogDate;}
+function isToday(d){return d===new Date().toISOString().slice(0,10);}
+
+function changeLogDate(){
+  const v=document.getElementById('logDate').value;
+  if(!v)return;
+  // don't allow future dates
+  const todayISO=new Date().toISOString().slice(0,10);
+  if(v>todayISO){
+    alert('can\'t log future dates ✦');
+    document.getElementById('logDate').value=currentLogDate;
+    return;
+  }
+  currentLogDate=v;
+  refreshLogUI();
+}
+function jumpToToday(){
+  currentLogDate=new Date().toISOString().slice(0,10);
+  document.getElementById('logDate').value=currentLogDate;
+  refreshLogUI();
+}
+function refreshLogUI(){
+  // re-render all the tag rows + score rows + notes for the selected date
+  makeTags('moodTags',MOODS,'mood');
+  makeTags('flowTags',FLOWS,'flow');
+  makeTags('crampTags',CRAMPS,'cramps');
+  makeTags('skinTags',SKINS,'skin');
+  makeSc('energySc','energy');
+  makeSc('sleepSc','sleep');
+  document.getElementById('logNotes').innerText=(S.logs[currentLogDate]||{}).notes||'';
+  // update banner + save button label
+  const picker=document.getElementById('logDatePicker');
+  const btn=document.getElementById('saveLogBtn');
+  if(isToday(currentLogDate)){
+    picker.classList.remove('editing');
+    btn.textContent='+ SAVE TODAY\'S ENTRY';
+  }else{
+    picker.classList.add('editing');
+    const dt=new Date(currentLogDate+'T00:00:00');
+    const ds=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    btn.textContent=`+ SAVE ENTRY FOR ${ds.toUpperCase()}`;
+  }
+}
+
 function makeTags(cid,opts,key){
-  const el=document.getElementById(cid);const td=new Date().toISOString().slice(0,10);const sel=(S.logs[td]||{})[key]||[];
+  const el=document.getElementById(cid);const td=getLogDate();const sel=(S.logs[td]||{})[key]||[];
   el.innerHTML=opts.map(o=>`<span class="chip${sel.includes(o.toLowerCase())?' on':''}" onclick="toggleTag('${cid}','${o.toLowerCase()}','${key}')">${o}</span>`).join('');
 }
 function toggleTag(cid,val,key){
-  const td=new Date().toISOString().slice(0,10);if(!S.logs[td])S.logs[td]={};
+  const td=getLogDate();if(!S.logs[td])S.logs[td]={};
   const arr=S.logs[td][key]||[];const i=arr.indexOf(val);if(i>-1)arr.splice(i,1);else arr.push(val);
   S.logs[td][key]=arr;
   const opts=cid==='crampTags'?CRAMPS:cid==='flowTags'?FLOWS:cid==='skinTags'?SKINS:MOODS;
   makeTags(cid,opts,key);
 }
 function makeSc(cid,key){
-  const el=document.getElementById(cid);const td=new Date().toISOString().slice(0,10);const val=(S.logs[td]||{})[key]||0;
+  const el=document.getElementById(cid);const td=getLogDate();const val=(S.logs[td]||{})[key]||0;
   el.innerHTML=Array.from({length:5},(_,i)=>`<button class="scbtn${val===i+1?' on':''}" onclick="setSc('${key}',${i+1},'${cid}')">${i+1}</button>`).join('');
 }
-function setSc(key,val,cid){const td=new Date().toISOString().slice(0,10);if(!S.logs[td])S.logs[td]={};S.logs[td][key]=val;makeSc(cid,key);}
+function setSc(key,val,cid){const td=getLogDate();if(!S.logs[td])S.logs[td]={};S.logs[td][key]=val;makeSc(cid,key);}
 
 function saveLog(){
-  const td=new Date().toISOString().slice(0,10);if(!S.logs[td])S.logs[td]={};
+  const td=getLogDate();if(!S.logs[td])S.logs[td]={};
   S.logs[td].notes=document.getElementById('logNotes').innerText.trim();
   save();renderChart(curChart);renderCal();renderPastEntries();
-  const b=document.querySelector('.sbtn');b.textContent='SAVED ✓';
-  setTimeout(()=>b.textContent='+ SAVE TODAY\'S ENTRY',2000);
+  const b=document.getElementById('saveLogBtn');
+  const orig=b.textContent;
+  b.textContent='SAVED ✓';
+  setTimeout(()=>{
+    // restore the contextual label (today vs backdated)
+    if(isToday(currentLogDate))b.textContent='+ SAVE TODAY\'S ENTRY';
+    else{
+      const dt=new Date(currentLogDate+'T00:00:00');
+      const ds=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      b.textContent=`+ SAVE ENTRY FOR ${ds.toUpperCase()}`;
+    }
+  },2000);
+}
+
+function deleteEntry(date){
+  const dt=new Date(date+'T00:00:00');
+  const ds=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  if(!confirm(`delete entry for ${ds}? this can't be undone.`))return;
+  delete S.logs[date];
+  save();
+  renderChart(curChart);
+  renderCal();
+  renderPastEntries();
+  // if user just deleted the date they were editing, refresh that view
+  if(date===currentLogDate)refreshLogUI();
+}
+
+function editEntry(date){
+  currentLogDate=date;
+  document.getElementById('logDate').value=date;
+  refreshLogUI();
+  // smooth scroll up to the daily log card
+  document.getElementById('logDatePicker').scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 function save(){
@@ -1337,11 +1472,15 @@ function renderPastEntries(){
     if(l.sleep)meta.push(`sleep ${l.sleep}`);
     if(l.cramps?.length&&!l.cramps.includes('none'))meta.push(`cramps: ${l.cramps.join(', ')}`);
     html+=`<div class="entry-row">
-      <div class="entry-date">${dateStr}</div>
+      <div class="entry-date" onclick="editEntry('${date}')" title="edit this entry">${dateStr}</div>
       <div class="entry-body">
         ${tags.length?`<div class="entry-tags">${tags.join('')}</div>`:''}
         ${meta.length?`<div class="entry-meta">${meta.join(' · ')}</div>`:''}
         ${l.notes?`<div class="entry-notes">"${l.notes}"</div>`:''}
+      </div>
+      <div class="entry-actions">
+        <button class="entry-act-btn" onclick="editEntry('${date}')" title="edit">✎</button>
+        <button class="entry-act-btn del" onclick="deleteEntry('${date}')" title="delete">×</button>
       </div>
     </div>`;
   });
@@ -1567,10 +1706,13 @@ function init(){
   if(S.lastStart){document.getElementById('pS').value=S.lastStart;const sp=document.getElementById('dspS');sp.textContent=fmtDate(S.lastStart);sp.classList.remove('ph');}
   if(S.lastEnd){document.getElementById('pE').value=S.lastEnd;const ep=document.getElementById('dspE');ep.textContent=fmtDate(S.lastEnd);ep.classList.remove('ph');}
   document.getElementById('todayDate').textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  // initialize log date picker
+  const todayISO=new Date().toISOString().slice(0,10);
+  const picker=document.getElementById('logDate');
+  picker.value=currentLogDate;
+  picker.max=todayISO;
   updateStats();renderHistory();renderPastEntries();
-  makeSc('energySc','energy');makeSc('sleepSc','sleep');
-  const td=new Date().toISOString().slice(0,10);
-  document.getElementById('logNotes').innerText=(S.logs[td]||{}).notes||'';
+  refreshLogUI();
   renderChart('mood');
   vbInit();
   setInterval(updateGreeting, 60000);
