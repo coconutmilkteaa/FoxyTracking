@@ -1036,6 +1036,95 @@ input[type=range].grad-slider::-moz-range-thumb{
   line-height:1;
 }
 
+/* ===== CYCLE SPOTIFY ===== */
+.cs-tabs{display:flex;gap:5px;margin-bottom:14px;}
+.cs-tab{
+  flex:1;text-align:center;padding:8px 6px;
+  border-radius:8px;cursor:pointer;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  border:1px solid var(--bd);background:var(--glass-soft);
+  color:var(--mu);transition:all .15s;
+}
+.cs-tab.on{border-color:currentColor;}
+.cs-tab.menstrual.on{color:var(--ph1);background:var(--ph1bg);}
+.cs-tab.follicular.on{color:var(--ph2);background:var(--ph2bg);}
+.cs-tab.ovulation.on{color:var(--ph3);background:var(--ph3bg);}
+.cs-tab.luteal.on{color:var(--ph4);background:var(--ph4bg);}
+.cs-tab:hover{color:var(--tx);}
+
+.cs-vibe{margin-bottom:14px;}
+.cs-vibe-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--mu);margin-bottom:6px;}
+.cs-vibe-text{
+  background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:8px;padding:8px 12px;
+  font-family:var(--script);font-style:italic;font-size:13px;
+  color:var(--tx);min-height:32px;outline:none;line-height:1.5;
+  transition:border-color .2s;
+}
+.cs-vibe-text:empty:before{content:attr(data-ph);color:var(--mu);pointer-events:none;}
+.cs-vibe-text:focus{border-color:var(--a1);}
+
+.cs-playlist{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.cs-song{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:10px;transition:all .15s;
+  position:relative;
+}
+.cs-song:hover{border-color:var(--a1);}
+.cs-song:hover .cs-song-del{opacity:1;}
+.cs-song-num{
+  font-family:var(--mono);font-size:10px;color:var(--mu2);
+  min-width:18px;flex-shrink:0;
+}
+.cs-song-info{flex:1;min-width:0;}
+.cs-song-title{
+  font-family:var(--sans);font-size:12px;font-weight:400;
+  color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cs-song-artist{
+  font-family:var(--script);font-style:italic;font-size:11px;
+  color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cs-song-link{
+  font-family:var(--mono);font-size:9px;letter-spacing:.06em;
+  color:var(--a1);text-decoration:none;
+  background:var(--a1soft);border-radius:4px;padding:3px 7px;
+  flex-shrink:0;transition:all .15s;
+}
+.cs-song-link:hover{background:var(--a1);color:#fff;}
+.cs-song-del{
+  font-family:var(--mono);font-size:11px;color:var(--mu2);
+  background:none;border:none;cursor:pointer;padding:2px 5px;
+  opacity:0;transition:opacity .15s;flex-shrink:0;
+}
+.cs-song-del:hover{color:#e57373;}
+
+.cs-add-row{display:flex;gap:5px;margin-bottom:5px;}
+.cs-add-input{
+  flex:1;background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:6px;padding:7px 10px;
+  font-family:var(--sans);font-size:11px;color:var(--tx);outline:none;
+}
+.cs-add-input::placeholder{color:var(--mu);font-style:italic;}
+.cs-add-input:focus{border-color:var(--a1);}
+.cs-add-artist{flex:.7;}
+.cs-add-btn{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--a1soft);border:1px solid var(--a1);
+  color:var(--a1);cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.cs-add-btn:hover{background:var(--a1);color:#fff;}
+.cs-link-row{margin-bottom:10px;}
+.cs-link-row .cs-add-input{width:100%;}
+.cs-empty{
+  font-family:var(--script);font-style:italic;font-size:13px;
+  color:var(--mu);text-align:center;padding:.5rem 0;
+}
+
 /* ===== FOOTER ===== */
 .footer-section{
   display:flex;align-items:center;justify-content:center;gap:40px;
@@ -1437,10 +1526,32 @@ input[type=range].grad-slider::-moz-range-thumb{
           <button class="seed-btn" onclick="clearAllData()">⌫ CLEAR ALL DATA</button>
         </div>
       </div>
+
+      <!-- Cycle Spotify -->
+      <div class="glass">
+        <div class="card-hdr">
+          <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">CYCLE_SPOTIFY</div></div>
+          <div class="card-num">[ 12 ]</div>
+        </div>
+        <hr class="card-rule"/>
+        <div class="cs-tabs" id="csTabs"></div>
+        <div class="cs-vibe" id="csVibe">
+          <div class="cs-vibe-label">// PHASE VIBE</div>
+          <div class="cs-vibe-text" id="csVibeText" contenteditable="true" data-ph="describe the vibe..."></div>
+        </div>
+        <div class="cs-playlist" id="csPlaylist"></div>
+        <div class="cs-add-row">
+          <input type="text" class="cs-add-input" id="csSongInput" placeholder="song title" maxlength="60" onkeydown="if(event.key==='Enter')document.getElementById('csArtistInput').focus()"/>
+          <input type="text" class="cs-add-input cs-add-artist" id="csArtistInput" placeholder="artist" maxlength="40" onkeydown="if(event.key==='Enter')addCsSong()"/>
+          <button class="cs-add-btn" onclick="addCsSong()">+</button>
+        </div>
+        <div class="cs-link-row">
+          <input type="text" class="cs-add-input" id="csLinkInput" placeholder="spotify or youtube link (optional)" maxlength="200" onkeydown="if(event.key==='Enter')addCsSong()"/>
+        </div>
+        <div class="cs-empty" id="csEmpty">no songs yet — add your first track ♫</div>
+      </div>
     </div>
   </div>
-
-  <!-- Footer -->
   <div class="footer-section">
     <div class="footer-ring-wrap">
       <canvas id="cycleRing" width="160" height="160"></canvas>
@@ -1507,7 +1618,7 @@ const AFFIRMATIONS=[
   "softness is strength."
 ];
 
-let S={palette:0,mode:'dark',logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:50,periodHistory:[],userName:'',visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50};
+let S={palette:0,mode:'dark',logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:50,periodHistory:[],userName:'',visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50,cycleSpotify:{menstrual:{vibe:'',songs:[]},follicular:{vibe:'',songs:[]},ovulation:{vibe:'',songs:[]},luteal:{vibe:'',songs:[]}}};
 let chartInst=null,curChart='mood',calYear,calMo;
 const today=new Date();
 calYear=today.getFullYear();calMo=today.getMonth();
@@ -1962,7 +2073,7 @@ function toggleCollapse(prefix){
 function clearAllData(){
   if(!confirm('this will erase ALL your data. are you sure?'))return;
   if(!confirm('really really sure? this cannot be undone.'))return;
-  S={palette:S.palette,mode:S.mode,logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:S.gradVal,periodHistory:[],userName:S.userName,visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50};
+  S={palette:S.palette,mode:S.mode,logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:S.gradVal,periodHistory:[],userName:S.userName,visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50,cycleSpotify:{menstrual:{vibe:'',songs:[]},follicular:{vibe:'',songs:[]},ovulation:{vibe:'',songs:[]},luteal:{vibe:'',songs:[]}}};
   save();location.reload();
 }
 
@@ -2512,6 +2623,100 @@ function renderSleepCycleChart(){
   chartInst=new Chart(canvas,{type:'bar',data:{labels,datasets:[{label:'sleep quality',data:days.map(d=>(S.logs[d]||{}).sleep||null),backgroundColor:phaseColors.map(c=>c+'88'),borderColor:phaseColors,borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:mu,font:{family:"'JetBrains Mono'",size:10,weight:'300'}}}},scales:{x:{ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9},maxTicksLimit:8},grid:{color:gc}},y:{min:0,max:5,ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9},stepSize:1},grid:{color:gc}}}}});
 }
 
+// ===== CYCLE SPOTIFY =====
+let csPhase='menstrual';
+const CS_PHASE_VIBES={
+  menstrual:'slow, introspective, cozy blanket energy',
+  follicular:'fresh starts, curiosity, building momentum',
+  ovulation:'main character energy, confident, magnetic',
+  luteal:'winding down, cozy, soft and reflective'
+};
+
+function initCycleSpotify(){
+  if(!S.cycleSpotify)S.cycleSpotify={menstrual:{vibe:'',songs:[]},follicular:{vibe:'',songs:[]},ovulation:{vibe:'',songs:[]},luteal:{vibe:'',songs:[]}};
+  // auto-select current phase if cycle is set
+  const pi=getPhaseIndex();
+  if(pi>=0)csPhase=['menstrual','follicular','ovulation','luteal'][pi];
+  renderCsTabs();
+  renderCsPlaylist();
+}
+
+function renderCsTabs(){
+  const el=document.getElementById('csTabs');if(!el)return;
+  const phases=['menstrual','follicular','ovulation','luteal'];
+  el.innerHTML=phases.map(p=>`<div class="cs-tab ${p}${p===csPhase?' on':''}" onclick="switchCsPhase('${p}')">${p.slice(0,4).toUpperCase()}</div>`).join('');
+}
+
+function switchCsPhase(p){
+  // save current vibe before switching
+  saveCsVibe();
+  csPhase=p;
+  renderCsTabs();
+  renderCsPlaylist();
+}
+
+function saveCsVibe(){
+  const el=document.getElementById('csVibeText');if(!el)return;
+  if(!S.cycleSpotify[csPhase])S.cycleSpotify[csPhase]={vibe:'',songs:[]};
+  S.cycleSpotify[csPhase].vibe=el.innerText.trim();
+  save();
+}
+
+function renderCsPlaylist(){
+  const playlist=document.getElementById('csPlaylist');
+  const empty=document.getElementById('csEmpty');
+  const vibeText=document.getElementById('csVibeText');
+  if(!playlist)return;
+  const data=S.cycleSpotify[csPhase]||{vibe:'',songs:[]};
+  // set vibe text
+  if(vibeText){
+    vibeText.innerText=data.vibe||'';
+    vibeText.setAttribute('data-ph',CS_PHASE_VIBES[csPhase]||'describe the vibe...');
+  }
+  // render songs
+  const songs=data.songs||[];
+  if(!songs.length){
+    playlist.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  playlist.innerHTML=songs.map((s,i)=>`<div class="cs-song">
+    <div class="cs-song-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="cs-song-info">
+      <div class="cs-song-title">${esc(s.title)}</div>
+      <div class="cs-song-artist">${esc(s.artist)}</div>
+    </div>
+    ${s.link?`<a class="cs-song-link" href="${esc(s.link)}" target="_blank" rel="noopener">PLAY ▸</a>`:''}
+    <button class="cs-song-del" onclick="deleteCsSong(${i})" title="remove">×</button>
+  </div>`).join('');
+}
+
+function esc(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function addCsSong(){
+  const titleEl=document.getElementById('csSongInput');
+  const artistEl=document.getElementById('csArtistInput');
+  const linkEl=document.getElementById('csLinkInput');
+  const title=titleEl.value.trim();
+  const artist=artistEl.value.trim();
+  const link=linkEl.value.trim();
+  if(!title)return;
+  if(!S.cycleSpotify[csPhase])S.cycleSpotify[csPhase]={vibe:'',songs:[]};
+  if(!S.cycleSpotify[csPhase].songs)S.cycleSpotify[csPhase].songs=[];
+  S.cycleSpotify[csPhase].songs.push({title,artist:artist||'unknown',link});
+  saveCsVibe();
+  titleEl.value='';artistEl.value='';linkEl.value='';
+  titleEl.focus();
+  renderCsPlaylist();
+}
+
+function deleteCsSong(idx){
+  if(!S.cycleSpotify[csPhase]?.songs)return;
+  S.cycleSpotify[csPhase].songs.splice(idx,1);
+  save();renderCsPlaylist();
+}
+
 // ===== FOOTER CYCLE RING =====
 function drawCycleRing(){
   const canvas=document.getElementById('cycleRing');if(!canvas)return;
@@ -2607,6 +2812,8 @@ function init(){
   vbInit();
   drawCycleRing();
   setFooterQuote();
+  initCycleSpotify();
+  document.getElementById('csVibeText')?.addEventListener('blur',saveCsVibe);
   if(S.bgImage)applyBgImage();
   // restore ambient sound preference (don't auto-play, just highlight)
   if(S.ambientSound&&S.ambientSound!=='off'){
