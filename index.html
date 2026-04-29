@@ -774,6 +774,253 @@ input[type=range].grad-slider::-moz-range-thumb{
 .vb-tile:hover::after{opacity:.7;}
 .vb-tile::-webkit-resizer{background:transparent;}
 
+/* ===== STARFIELD PARTICLES ===== */
+.starfield{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.star-particle{position:absolute;width:2px;height:2px;background:var(--mu2);border-radius:50%;opacity:0;animation:starDrift 12s linear infinite;}
+@keyframes starDrift{
+  0%{opacity:0;transform:translateY(0) translateX(0);}
+  10%{opacity:0.6;}
+  90%{opacity:0.6;}
+  100%{opacity:0;transform:translateY(-120px) translateX(40px);}
+}
+.pt{position:relative;z-index:1;}
+
+/* ===== CURSOR SPARKLE TRAIL ===== */
+.cursor-sparkle{position:fixed;pointer-events:none;z-index:9999;font-size:10px;color:var(--a1);opacity:1;animation:sparkFade .8s ease-out forwards;}
+@keyframes sparkFade{0%{opacity:1;transform:scale(1) translateY(0);}100%{opacity:0;transform:scale(0.3) translateY(-20px);}}
+
+/* ===== AMBIENT SOUND TOGGLE ===== */
+.amb-toggle{
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--glass-bd);background:var(--glass);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .2s;position:relative;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.amb-toggle:hover{border-color:var(--a1);}
+.amb-toggle.playing{border-color:var(--a1);background:var(--a1soft);}
+.amb-dropdown{
+  position:absolute;top:50px;right:0;
+  background:var(--glass);border:1px solid var(--glass-bd);
+  border-radius:14px;padding:14px;
+  display:none;flex-direction:column;gap:6px;
+  z-index:200;min-width:200px;
+  box-shadow:0 12px 50px rgba(0,0,0,0.25);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+}
+.amb-dropdown.open{display:flex;}
+.amb-option{
+  border:1px solid transparent;border-radius:8px;padding:7px 12px;
+  cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  background:var(--glass-soft);color:var(--mu);
+  transition:all .15s;display:flex;align-items:center;gap:8px;
+}
+.amb-option.on{border-color:var(--a1);color:var(--a1);background:var(--a1soft);}
+.amb-option:hover{color:var(--tx);background:var(--a3);}
+.amb-vol{
+  display:flex;align-items:center;gap:8px;padding:4px 2px;
+}
+.amb-vol label{font-family:var(--mono);font-size:9px;color:var(--mu);letter-spacing:.08em;}
+.amb-vol input[type=range]{flex:1;height:4px;appearance:none;-webkit-appearance:none;background:var(--bd);border-radius:50px;cursor:pointer;}
+.amb-vol input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--a1);cursor:pointer;}
+
+/* ===== DAILY AFFIRMATION ===== */
+.affirmation-bar{
+  font-family:var(--script);font-style:italic;font-size:14px;
+  color:var(--mu);text-align:center;padding:10px 18px;
+  margin-bottom:1.25rem;line-height:1.5;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:12px;
+}
+
+/* ===== STREAK COUNTER ===== */
+.streak-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:10px;padding:10px 14px;margin-bottom:14px;
+}
+.streak-flame{font-size:18px;}
+.streak-num{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--tx);}
+.streak-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--mu);}
+
+/* ===== QUICK EMOJI PICKER ===== */
+.emoji-row{display:flex;gap:6px;margin-bottom:14px;}
+.emoji-btn{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  cursor:pointer;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.emoji-btn.on{border-color:var(--a1);background:var(--a1soft);transform:scale(1.1);}
+.emoji-btn:hover{border-color:var(--a1);transform:scale(1.05);}
+
+/* ===== GRATITUDE ENTRY ===== */
+.gratitude-block{margin-bottom:1rem;}
+.gratitude-area{
+  background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:10px;padding:11px 14px;
+  font-family:var(--script);font-style:italic;font-size:14px;
+  color:var(--tx);min-height:48px;outline:none;line-height:1.6;
+  transition:border-color .2s;
+}
+.gratitude-area:empty:before{content:attr(data-ph);color:var(--mu);pointer-events:none;}
+.gratitude-area:focus{border-color:var(--a1);}
+
+/* ===== VOICE NOTE ===== */
+.voice-block{margin-bottom:1rem;}
+.voice-row{display:flex;gap:8px;align-items:center;}
+.voice-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  color:var(--mu);cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.voice-btn.recording{border-color:#e57373;background:rgba(229,115,115,0.15);color:#e57373;animation:voicePulse 1.2s ease-in-out infinite;}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(229,115,115,0.3);}50%{box-shadow:0 0 0 8px rgba(229,115,115,0);}}
+.voice-btn:hover{border-color:var(--a1);color:var(--a1);}
+.voice-status{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--mu);}
+.voice-playback{
+  display:flex;align-items:center;gap:8px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:10px;padding:8px 12px;flex:1;
+}
+.voice-playback audio{flex:1;height:28px;max-width:100%;}
+.voice-delete{
+  font-family:var(--mono);font-size:11px;color:var(--mu);
+  background:none;border:none;cursor:pointer;padding:2px 6px;
+}
+.voice-delete:hover{color:#e57373;}
+
+/* ===== CUSTOM SYMPTOM TAGS ===== */
+.custom-tag-row{display:flex;gap:6px;margin-top:8px;align-items:center;}
+.custom-tag-input{
+  flex:1;background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:6px;padding:5px 10px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  color:var(--tx);outline:none;
+}
+.custom-tag-input::placeholder{color:var(--mu);font-style:italic;}
+.custom-tag-input:focus{border-color:var(--a1);}
+.custom-tag-add{
+  font-family:var(--mono);font-size:10px;
+  background:var(--a1soft);border:1px solid var(--a1);
+  color:var(--a1);border-radius:6px;padding:5px 10px;
+  cursor:pointer;transition:all .15s;
+}
+.custom-tag-add:hover{background:var(--a1);color:#fff;}
+.chip.custom{border-style:dashed;}
+
+/* ===== BACKGROUND IMAGE UPLOAD ===== */
+.bg-upload-row{
+  display:flex;align-items:center;gap:10px;margin-top:8px;
+}
+.bg-upload-btn{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  color:var(--mu);border-radius:8px;padding:8px 14px;
+  cursor:pointer;transition:all .15s;
+}
+.bg-upload-btn:hover{border-color:var(--a1);color:var(--a1);}
+.bg-clear-btn{
+  font-family:var(--mono);font-size:9px;
+  background:none;border:1px solid var(--bd);
+  color:var(--mu2);border-radius:6px;padding:5px 9px;
+  cursor:pointer;transition:all .15s;
+}
+.bg-clear-btn:hover{border-color:#e57373;color:#e57373;}
+
+/* ===== MEDICATION / SUPPLEMENT LOG ===== */
+.med-list{margin-bottom:8px;}
+.med-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 0;border-bottom:1px solid var(--glass-bd);
+}
+.med-item:last-child{border-bottom:none;}
+.med-check{
+  width:18px;height:18px;border-radius:5px;
+  border:1.5px solid var(--bd);background:var(--glass-soft);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent;transition:all .15s;flex-shrink:0;
+}
+.med-check.done{border-color:var(--a1);background:var(--a1soft);color:var(--a1);}
+.med-name{font-family:var(--sans);font-size:12px;color:var(--tx);flex:1;}
+.med-time{font-family:var(--mono);font-size:9px;color:var(--mu);letter-spacing:.06em;}
+.med-del{
+  font-family:var(--mono);font-size:11px;color:var(--mu2);
+  background:none;border:none;cursor:pointer;padding:2px 5px;opacity:0;transition:opacity .15s;
+}
+.med-item:hover .med-del{opacity:1;}
+.med-del:hover{color:#e57373;}
+.med-add-row{display:flex;gap:6px;margin-top:6px;}
+.med-add-input{
+  flex:1;background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:6px;padding:6px 10px;
+  font-family:var(--sans);font-size:11px;color:var(--tx);outline:none;
+}
+.med-add-input::placeholder{color:var(--mu);font-style:italic;}
+.med-add-input:focus{border-color:var(--a1);}
+.med-add-time{
+  width:80px;background:var(--ibg);border:1px solid var(--ibd);
+  border-radius:6px;padding:6px 8px;
+  font-family:var(--mono);font-size:10px;color:var(--tx);outline:none;
+}
+.med-add-btn{
+  font-family:var(--mono);font-size:10px;
+  background:var(--a1soft);border:1px solid var(--a1);
+  color:var(--a1);border-radius:6px;padding:6px 10px;
+  cursor:pointer;transition:all .15s;
+}
+.med-add-btn:hover{background:var(--a1);color:#fff;}
+
+/* ===== PMS PREDICTION WINDOW ===== */
+.pms-banner{
+  display:flex;align-items:center;gap:10px;
+  background:var(--ph4bg);border:1px solid var(--ph4);
+  border-radius:10px;padding:10px 14px;margin-top:10px;
+}
+.pms-banner-icon{font-size:16px;}
+.pms-banner-text{font-family:var(--script);font-style:italic;font-size:12px;color:var(--tx);line-height:1.4;}
+.pms-banner.hidden{display:none;}
+
+/* ===== PREDICTION CONFIDENCE ===== */
+.pred-conf{
+  display:flex;align-items:center;gap:10px;
+  margin-top:8px;padding:8px 12px;
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:8px;
+}
+.pred-conf-bar{flex:1;height:6px;background:var(--bd);border-radius:50px;overflow:hidden;}
+.pred-conf-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--a1),var(--ph2));transition:width .4s;}
+.pred-conf-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--mu);flex-shrink:0;}
+
+/* ===== MOOD-PHASE PAIRING ===== */
+.mood-phase-card{
+  background:var(--glass-soft);border:1px solid var(--bd);
+  border-radius:12px;padding:14px;margin-top:1rem;
+}
+.mood-phase-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--mu);margin-bottom:10px;}
+.mood-phase-row{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;border-bottom:1px solid var(--glass-bd);
+}
+.mood-phase-row:last-child{border-bottom:none;}
+.mood-phase-phase{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--mu);min-width:80px;}
+.mood-phase-moods{font-family:var(--script);font-style:italic;font-size:12px;color:var(--tx);flex:1;}
+
+/* ===== MOOD WORD CLOUD ===== */
+.word-cloud{
+  display:flex;flex-wrap:wrap;gap:6px;
+  justify-content:center;align-items:center;
+  padding:14px 8px;min-height:60px;
+}
+.word-cloud-word{
+  font-family:var(--script);font-style:italic;
+  color:var(--a1);transition:all .2s;cursor:default;
+  line-height:1;
+}
+
 /* responsive */
 @media (max-width:880px){
   .grid-main{grid-template-columns:1fr;}
@@ -786,6 +1033,7 @@ input[type=range].grad-slider::-moz-range-thumb{
 </style>
 </head>
 <body>
+<div class="starfield" id="starfield"></div>
 <div class="pt dark" id="pt">
   <div class="frame-corner tl"></div>
   <div class="frame-corner tr"></div>
@@ -798,6 +1046,21 @@ input[type=range].grad-slider::-moz-range-thumb{
   <div class="top-row">
     <div class="tracker-pill">// FOXY_TRACKING</div>
     <div class="hdr-tools">
+      <div class="amb-wrap" style="position:relative;">
+        <div class="amb-toggle" id="ambToggle" onclick="toggleAmbDrop()" title="ambient sounds">♫</div>
+        <div class="amb-dropdown" id="ambDrop">
+          <div class="pal-section-label">// AMBIENT</div>
+          <div class="amb-option" data-sound="rain" onclick="setAmbient('rain')">🌧 soft rain</div>
+          <div class="amb-option" data-sound="whitenoise" onclick="setAmbient('whitenoise')">☁ white noise</div>
+          <div class="amb-option" data-sound="lofi" onclick="setAmbient('lofi')">🎵 lo-fi hum</div>
+          <div class="amb-option" data-sound="off" onclick="setAmbient('off')">✕ off</div>
+          <div class="grad-divider"></div>
+          <div class="amb-vol">
+            <label>VOL</label>
+            <input type="range" min="0" max="100" value="50" id="ambVol" oninput="setAmbVol(this.value)"/>
+          </div>
+        </div>
+      </div>
       <div class="pal-wrap">
         <div class="pal-icon" onclick="togglePalDrop()" title="palette">✦</div>
         <div class="pal-dropdown" id="palDrop">
@@ -821,6 +1084,8 @@ input[type=range].grad-slider::-moz-range-thumb{
     <button class="name-edit-btn" onclick="openNameModal()">edit name</button>
     <hr class="hero-rule"/>
   </div>
+
+  <div class="affirmation-bar" id="affirmationBar">"you are exactly where you need to be."</div>
 
   <!-- name modal -->
   <div class="modal-bg" id="nameModal" onclick="if(event.target===this)closeNameModal()">
@@ -882,6 +1147,19 @@ input[type=range].grad-slider::-moz-range-thumb{
         </div>
         <hr class="card-rule"/>
 
+        <!-- Streak counter -->
+        <div class="streak-bar" id="streakBar">
+          <div class="streak-flame">🔥</div>
+          <div class="streak-num" id="streakNum">0</div>
+          <div class="streak-label">DAY STREAK</div>
+        </div>
+
+        <!-- Quick emoji picker -->
+        <div class="log-block">
+          <div class="log-block-label">// HOW WAS TODAY?</div>
+          <div class="emoji-row" id="emojiPicker"></div>
+        </div>
+
         <div class="log-date-picker" id="logDatePicker">
           <span class="log-date-label">// DATE</span>
           <input type="date" class="log-date-input" id="logDate" onchange="changeLogDate()"/>
@@ -893,6 +1171,16 @@ input[type=range].grad-slider::-moz-range-thumb{
         <div class="log-block"><div class="log-block-label">// CRAMPS</div><div class="chip-row" id="crampTags"></div></div>
         <div class="log-block"><div class="log-block-label">// SKIN</div><div class="chip-row" id="skinTags"></div></div>
 
+        <!-- Custom symptom tags -->
+        <div class="log-block">
+          <div class="log-block-label">// CUSTOM SYMPTOMS</div>
+          <div class="chip-row" id="customSymptomTags"></div>
+          <div class="custom-tag-row">
+            <input type="text" class="custom-tag-input" id="customTagInput" placeholder="add your own tag..." maxlength="24" onkeydown="if(event.key==='Enter')addCustomTag()"/>
+            <button class="custom-tag-add" onclick="addCustomTag()">+ ADD</button>
+          </div>
+        </div>
+
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="log-block"><div class="log-block-label">// ENERGY (1-5)</div><div class="scrow" id="energySc"></div></div>
           <div class="log-block"><div class="log-block-label">// SLEEP (1-5)</div><div class="scrow" id="sleepSc"></div></div>
@@ -900,6 +1188,22 @@ input[type=range].grad-slider::-moz-range-thumb{
 
         <div class="log-block"><div class="log-block-label">// NOTES</div>
           <div class="fake-area" id="logNotes" contenteditable="true" data-ph="anything to remember..."></div>
+        </div>
+
+        <!-- Gratitude entry -->
+        <div class="gratitude-block">
+          <div class="log-block-label">// GRATITUDE</div>
+          <div class="gratitude-area" id="gratitudeArea" contenteditable="true" data-ph="something you're grateful for today..."></div>
+        </div>
+
+        <!-- Voice note -->
+        <div class="voice-block">
+          <div class="log-block-label">// VOICE NOTE</div>
+          <div class="voice-row" id="voiceRow">
+            <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()" title="record a voice note">🎙</button>
+            <span class="voice-status" id="voiceStatus">tap to record</span>
+          </div>
+          <div id="voicePlayback"></div>
         </div>
 
         <button class="sbtn" id="saveLogBtn" onclick="saveLog()">+ SAVE TODAY'S ENTRY</button>
@@ -962,6 +1266,16 @@ input[type=range].grad-slider::-moz-range-thumb{
           <div class="next-est-mono">// NEXT_PERIOD_ESTIMATE</div>
           <div class="next-est-val" id="nextEst">—</div>
         </div>
+        <!-- Prediction confidence -->
+        <div class="pred-conf" id="predConf">
+          <div class="pred-conf-label" id="predConfLabel">CONFIDENCE: —</div>
+          <div class="pred-conf-bar"><div class="pred-conf-fill" id="predConfFill" style="width:0%"></div></div>
+        </div>
+        <!-- PMS prediction window -->
+        <div class="pms-banner hidden" id="pmsBanner">
+          <div class="pms-banner-icon">⚡</div>
+          <div class="pms-banner-text" id="pmsBannerText">PMS window — you might start noticing symptoms soon</div>
+        </div>
         <div class="date-row">
           <div class="df">
             <label>// LAST PERIOD START</label>
@@ -976,13 +1290,41 @@ input[type=range].grad-slider::-moz-range-thumb{
         </div>
       </div>
 
+      <!-- Medication / Supplement Log -->
+      <div class="glass">
+        <div class="card-hdr">
+          <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">MEDS_&_SUPPLEMENTS</div></div>
+          <div class="card-num">[ 06 ]</div>
+        </div>
+        <hr class="card-rule"/>
+        <div class="med-list" id="medList"></div>
+        <div class="med-add-row">
+          <input type="text" class="med-add-input" id="medNameInput" placeholder="medication or supplement..." maxlength="40" onkeydown="if(event.key==='Enter')addMed()"/>
+          <input type="time" class="med-add-time" id="medTimeInput"/>
+          <button class="med-add-btn" onclick="addMed()">+ ADD</button>
+        </div>
+      </div>
+
+      <!-- Mood-Phase Insights -->
+      <div class="glass">
+        <div class="card-hdr">
+          <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">MOOD_×_PHASE</div></div>
+          <div class="card-num">[ 07 ]</div>
+        </div>
+        <hr class="card-rule"/>
+        <div class="mood-phase-title">// YOU TEND TO FEEL...</div>
+        <div id="moodPhaseContent"><div class="ph-empty">log more entries to see patterns</div></div>
+        <div class="mood-phase-title" style="margin-top:14px;">// MOOD WORD CLOUD</div>
+        <div class="word-cloud" id="wordCloud"><span style="font-family:var(--script);font-style:italic;font-size:13px;color:var(--mu);">log moods to generate</span></div>
+      </div>
+
       <!-- Period history -->
       <div class="glass">
         <div class="card-hdr">
           <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">PERIOD_HISTORY</div></div>
           <div style="display:flex;align-items:center;gap:10px;">
             <button class="collapse-toggle" id="phToggle" onclick="toggleCollapse('ph')"><span class="arrow">▾</span></button>
-            <div class="card-num">[ 06 ]</div>
+            <div class="card-num">[ 08 ]</div>
           </div>
         </div>
         <hr class="card-rule"/>
@@ -997,7 +1339,7 @@ input[type=range].grad-slider::-moz-range-thumb{
           <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">PAST_ENTRIES</div></div>
           <div style="display:flex;align-items:center;gap:10px;">
             <button class="collapse-toggle" id="peToggle" onclick="toggleCollapse('pe')"><span class="arrow">▾</span></button>
-            <div class="card-num">[ 07 ]</div>
+            <div class="card-num">[ 09 ]</div>
           </div>
         </div>
         <hr class="card-rule"/>
@@ -1010,28 +1352,37 @@ input[type=range].grad-slider::-moz-range-thumb{
       <div class="glass">
         <div class="card-hdr">
           <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">WELLNESS_PATTERNS</div></div>
-          <div class="card-num">[ 08 ]</div>
+          <div class="card-num">[ 10 ]</div>
         </div>
         <hr class="card-rule"/>
         <div class="ctabs">
           <div class="ctab on" onclick="switchChart('mood',this)">MOOD</div>
           <div class="ctab" onclick="switchChart('energy',this)">ENERGY // SLEEP</div>
           <div class="ctab" onclick="switchChart('symptoms',this)">SYMPTOMS</div>
+          <div class="ctab" onclick="switchChart('sleepCycle',this)">SLEEP × CYCLE</div>
         </div>
         <div class="chwrap"><canvas id="iChart"></canvas></div>
       </div>
 
-      <!-- Data -->
+      <!-- Data & Personalization -->
       <div class="glass">
         <div class="card-hdr">
-          <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">DATA</div></div>
-          <div class="card-num">[ 09 ]</div>
+          <div class="card-title-grp"><div class="card-bullet"></div><div class="card-label">DATA_&_PERSONALIZATION</div></div>
+          <div class="card-num">[ 11 ]</div>
         </div>
         <hr class="card-rule"/>
         <div class="exprow">
           <button class="expbtn" onclick="exportJSON()">EXPORT .JSON</button>
           <button class="expbtn" onclick="exportCSV()">EXPORT .CSV</button>
           <button class="expbtn" onclick="importData()">IMPORT</button>
+        </div>
+        <div style="margin-top:.85rem;padding-top:.75rem;border-top:1px solid var(--glass-bd);">
+          <div class="log-block-label" style="margin-bottom:8px;">// BACKGROUND IMAGE</div>
+          <div class="bg-upload-row">
+            <button class="bg-upload-btn" onclick="uploadBgImage()">UPLOAD IMAGE</button>
+            <button class="bg-clear-btn" id="bgClearBtn" onclick="clearBgImage()" style="display:none;">CLEAR</button>
+            <input type="file" id="bgFileInput" accept="image/*" style="display:none" onchange="handleBgUpload(event)"/>
+          </div>
         </div>
         <div style="margin-top:.85rem;padding-top:.75rem;border-top:1px solid var(--glass-bd);">
           <button class="seed-btn" onclick="clearAllData()">⌫ CLEAR ALL DATA</button>
@@ -1072,8 +1423,26 @@ const MOODS=['CALM','HAPPY','ANXIOUS','TIRED','IRRITABLE','EMOTIONAL','ENERGIZED
 const CRAMPS=['NONE','MILD','MODERATE','SEVERE'];
 const FLOWS=['NONE','SPOTTING','LIGHT','MEDIUM','HEAVY'];
 const SKINS=['CLEAR','MILD BREAKOUT','BAD BREAKOUT'];
+const QUICK_EMOJIS=['😐','🥰','😫','💔'];
+const AFFIRMATIONS=[
+  "you are exactly where you need to be.",
+  "your body knows what it's doing — trust it.",
+  "rest is not laziness, it's repair.",
+  "you don't have to be productive to be worthy.",
+  "small steps still count.",
+  "be gentle with yourself today.",
+  "your feelings are valid, all of them.",
+  "you are allowed to take up space.",
+  "today doesn't have to be perfect.",
+  "breathe — you're doing enough.",
+  "your pace is your own.",
+  "let go of what you can't control.",
+  "you are more resilient than you know.",
+  "it's okay to start over, any day.",
+  "softness is strength."
+];
 
-let S={palette:0,mode:'dark',logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:50,periodHistory:[],userName:'',visionBoard:[]};
+let S={palette:0,mode:'dark',logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:50,periodHistory:[],userName:'',visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50};
 let chartInst=null,curChart='mood',calYear,calMo;
 const today=new Date();
 calYear=today.getFullYear();calMo=today.getMonth();
@@ -1081,7 +1450,7 @@ calYear=today.getFullYear();calMo=today.getMonth();
 function cs(v){return getComputedStyle(document.getElementById('pt')).getPropertyValue(v).trim();}
 
 function togglePalDrop(){document.getElementById('palDrop').classList.toggle('open');}
-document.addEventListener('click',e=>{const w=document.querySelector('.pal-wrap');if(w&&!w.contains(e.target))document.getElementById('palDrop').classList.remove('open');});
+document.addEventListener('click',e=>{const palIcon=document.querySelector('.pal-icon');const palWrap=palIcon?.parentElement;if(palWrap&&!palWrap.contains(e.target))document.getElementById('palDrop').classList.remove('open');});
 
 function onGrad(val){S.gradVal=parseInt(val);updateGrad();save();}
 function updateGrad(){
@@ -1242,6 +1611,7 @@ function updateStats(){
   document.getElementById('svPhase').textContent=PHASES[pi].name;
   document.getElementById('nextEst').textContent=nextStr+' · in '+Math.max(0,daysLeft)+' days';
   renderCal();renderPhaseCards();renderMoodboard();save();
+  updatePMSBanner();updatePredConf();
 }
 
 function renderCal(){
@@ -1308,6 +1678,11 @@ function refreshLogUI(){
   makeSc('energySc','energy');
   makeSc('sleepSc','sleep');
   document.getElementById('logNotes').innerText=(S.logs[currentLogDate]||{}).notes||'';
+  renderEmojiPicker();
+  loadGratitude();
+  renderCustomSymptoms();
+  renderVoicePlayback();
+  renderMeds();
   // update banner + save button label
   const picker=document.getElementById('logDatePicker');
   const btn=document.getElementById('saveLogBtn');
@@ -1342,7 +1717,8 @@ function setSc(key,val,cid){const td=getLogDate();if(!S.logs[td])S.logs[td]={};S
 function saveLog(){
   const td=getLogDate();if(!S.logs[td])S.logs[td]={};
   S.logs[td].notes=document.getElementById('logNotes').innerText.trim();
-  save();renderChart(curChart);renderCal();renderPastEntries();
+  S.logs[td].gratitude=document.getElementById('gratitudeArea').innerText.trim();
+  save();renderChart(curChart==='sleepCycle'?'sleepCycle':curChart);renderCal();renderPastEntries();calcStreak();renderMoodPhase();renderWordCloud();
   const b=document.getElementById('saveLogBtn');
   const orig=b.textContent;
   b.textContent='SAVED ✓';
@@ -1412,9 +1788,9 @@ function renderChart(type){
   }
 }
 
-function switchChart(t,el){curChart=t;document.querySelectorAll('.ctab').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderChart(t);}
+function switchChart(t,el){curChart=t;document.querySelectorAll('.ctab').forEach(c=>c.classList.remove('on'));el.classList.add('on');if(t==='sleepCycle')renderSleepCycleChart();else renderChart(t);}
 function exportJSON(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='foxy-data.json';a.click();}
-function exportCSV(){const rows=[['date','mood','energy','sleep','cramps','flow','skin','notes']];for(const[d,l]of Object.entries(S.logs))rows.push([d,(l.mood||[]).join('|'),l.energy||'',l.sleep||'',(l.cramps||[]).join('|'),(l.flow||[]).join('|'),(l.skin||[]).join('|'),l.notes||'']);const b=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='foxy-data.csv';a.click();}
+function exportCSV(){const rows=[['date','mood','energy','sleep','cramps','flow','skin','notes','gratitude','emoji','customSymptoms','medsTaken']];for(const[d,l]of Object.entries(S.logs))rows.push([d,(l.mood||[]).join('|'),l.energy||'',l.sleep||'',(l.cramps||[]).join('|'),(l.flow||[]).join('|'),(l.skin||[]).join('|'),(l.notes||'').replace(/,/g,';'),l.gratitude||'',l.quickEmoji||'',(l.customSymptoms||[]).join('|'),(l.medsTaken||[]).join('|')]);const b=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='foxy-data.csv';a.click();}
 function importData(){const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=e=>{const r=new FileReader();r.onload=ev=>{try{S={...S,...JSON.parse(ev.target.result)};save();init();}catch(e){alert('invalid file');}};r.readAsText(e.target.files[0]);};inp.click();}
 
 let phPage=1, pePage=1;
@@ -1453,7 +1829,7 @@ function renderPastEntries(){
   const el=document.getElementById('peContent');
   const td=new Date().toISOString().slice(0,10);
   const entries=Object.entries(S.logs||{})
-    .filter(([d,l])=>d!==td&&l&&(l.mood?.length||l.energy||l.flow?.length||l.cramps?.length||l.skin?.length||l.notes))
+    .filter(([d,l])=>d!==td&&l&&(l.mood?.length||l.energy||l.flow?.length||l.cramps?.length||l.skin?.length||l.notes||l.gratitude||l.quickEmoji))
     .sort((a,b)=>b[0].localeCompare(a[0]));
   if(!entries.length){el.innerHTML='<div class="entry-empty">no past entries yet — log today\'s entry to start</div>';return;}
   const totalPages=Math.max(1,Math.ceil(entries.length/PER_PAGE_PE));
@@ -1465,6 +1841,7 @@ function renderPastEntries(){
     const dt=new Date(date+'T00:00:00');
     const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
     const tags=[];
+    if(l.quickEmoji)tags.push(`<span class="entry-mini-chip" style="font-size:14px;padding:0 4px;">${l.quickEmoji}</span>`);
     if(l.flow?.length)l.flow.filter(f=>f!=='none').forEach(f=>tags.push(`<span class="entry-mini-chip flow">${f}</span>`));
     if(l.mood?.length)l.mood.slice(0,3).forEach(m=>tags.push(`<span class="entry-mini-chip">${m}</span>`));
     const meta=[];
@@ -1477,6 +1854,7 @@ function renderPastEntries(){
         ${tags.length?`<div class="entry-tags">${tags.join('')}</div>`:''}
         ${meta.length?`<div class="entry-meta">${meta.join(' · ')}</div>`:''}
         ${l.notes?`<div class="entry-notes">"${l.notes}"</div>`:''}
+        ${l.gratitude?`<div class="entry-notes" style="color:var(--ph2);">✧ ${l.gratitude}</div>`:''}
       </div>
       <div class="entry-actions">
         <button class="entry-act-btn" onclick="editEntry('${date}')" title="edit">✎</button>
@@ -1521,7 +1899,7 @@ function toggleCollapse(prefix){
 function clearAllData(){
   if(!confirm('this will erase ALL your data. are you sure?'))return;
   if(!confirm('really really sure? this cannot be undone.'))return;
-  S={palette:S.palette,mode:S.mode,logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:S.gradVal,periodHistory:[],userName:S.userName};
+  S={palette:S.palette,mode:S.mode,logs:{},lastStart:'',lastEnd:'',cycleLen:28,gradVal:S.gradVal,periodHistory:[],userName:S.userName,visionBoard:[],meds:[],customSymptoms:[],bgImage:'',ambientSound:'off',ambientVol:50};
   save();location.reload();
 }
 
@@ -1694,14 +2072,395 @@ function vbDelete(id){
   vbRender();
 }
 
+// ===== STARFIELD =====
+function initStarfield(){
+  const sf=document.getElementById('starfield');
+  for(let i=0;i<40;i++){
+    const s=document.createElement('div');
+    s.className='star-particle';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=Math.random()*12+'s';
+    s.style.animationDuration=(8+Math.random()*8)+'s';
+    s.style.width=s.style.height=(1+Math.random()*2)+'px';
+    sf.appendChild(s);
+  }
+}
+
+// ===== CURSOR SPARKLE TRAIL =====
+let sparkleThrottle=0;
+function initCursorSparkles(){
+  document.addEventListener('mousemove',e=>{
+    if(Date.now()-sparkleThrottle<80)return;
+    sparkleThrottle=Date.now();
+    const sp=document.createElement('div');
+    sp.className='cursor-sparkle';
+    sp.textContent=Math.random()>.5?'✦':'✧';
+    sp.style.left=e.clientX+'px';
+    sp.style.top=e.clientY+'px';
+    sp.style.fontSize=(8+Math.random()*6)+'px';
+    document.body.appendChild(sp);
+    setTimeout(()=>sp.remove(),800);
+  });
+}
+
+// ===== AMBIENT SOUND =====
+let ambAudioCtx=null, ambSource=null, ambGain=null, ambPlaying=false, ambOscillators=[];
+function toggleAmbDrop(){document.getElementById('ambDrop').classList.toggle('open');}
+document.addEventListener('click',e=>{const w=document.querySelector('.amb-wrap');if(w&&!w.contains(e.target))document.getElementById('ambDrop')?.classList.remove('open');});
+
+function setAmbient(type){
+  stopAmbient();
+  document.querySelectorAll('.amb-option').forEach(o=>o.classList.remove('on'));
+  if(type==='off'){
+    S.ambientSound='off';
+    document.getElementById('ambToggle').classList.remove('playing');
+    save();return;
+  }
+  if(!ambAudioCtx)ambAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  ambGain=ambAudioCtx.createGain();
+  ambGain.gain.value=(S.ambientVol||50)/100*0.3;
+  ambGain.connect(ambAudioCtx.destination);
+  if(type==='whitenoise'){
+    const bufferSize=2*ambAudioCtx.sampleRate;
+    const buf=ambAudioCtx.createBuffer(1,bufferSize,ambAudioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufferSize;i++)d[i]=(Math.random()*2-1)*0.3;
+    ambSource=ambAudioCtx.createBufferSource();
+    ambSource.buffer=buf;ambSource.loop=true;
+    const lp=ambAudioCtx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=800;
+    ambSource.connect(lp);lp.connect(ambGain);
+    ambSource.start();
+  } else if(type==='rain'){
+    const bufferSize=2*ambAudioCtx.sampleRate;
+    const buf=ambAudioCtx.createBuffer(1,bufferSize,ambAudioCtx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<bufferSize;i++)d[i]=(Math.random()*2-1)*0.2;
+    ambSource=ambAudioCtx.createBufferSource();
+    ambSource.buffer=buf;ambSource.loop=true;
+    const bp=ambAudioCtx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200;bp.Q.value=0.5;
+    const lp=ambAudioCtx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3000;
+    ambSource.connect(bp);bp.connect(lp);lp.connect(ambGain);
+    ambSource.start();
+  } else if(type==='lofi'){
+    // warm sine tones
+    [220,277.18,329.63].forEach(freq=>{
+      const osc=ambAudioCtx.createOscillator();
+      osc.type='sine';osc.frequency.value=freq;
+      const g=ambAudioCtx.createGain();g.gain.value=0.04;
+      osc.connect(g);g.connect(ambGain);osc.start();
+      ambOscillators.push(osc);
+    });
+  }
+  S.ambientSound=type;ambPlaying=true;
+  document.getElementById('ambToggle').classList.add('playing');
+  document.querySelector(`.amb-option[data-sound="${type}"]`)?.classList.add('on');
+  save();
+}
+function stopAmbient(){
+  try{ambSource?.stop();}catch(e){}
+  ambOscillators.forEach(o=>{try{o.stop();}catch(e){}});
+  ambOscillators=[];ambSource=null;ambPlaying=false;
+}
+function setAmbVol(v){S.ambientVol=parseInt(v);if(ambGain)ambGain.gain.value=v/100*0.3;save();}
+
+// ===== AFFIRMATION =====
+function setAffirmation(){
+  const el=document.getElementById('affirmationBar');
+  if(!el)return;
+  const seed=new Date().toDateString();
+  let hash=0;for(let i=0;i<seed.length;i++)hash=((hash<<5)-hash)+seed.charCodeAt(i);
+  const idx=Math.abs(hash)%AFFIRMATIONS.length;
+  el.textContent='"'+AFFIRMATIONS[idx]+'"';
+}
+
+// ===== STREAK COUNTER =====
+function calcStreak(){
+  let streak=0;
+  const d=new Date();
+  for(let i=0;i<365;i++){
+    const ds=d.toISOString().slice(0,10);
+    const log=S.logs[ds];
+    if(log&&(log.mood?.length||log.energy||log.notes||log.gratitude||log.quickEmoji)){
+      streak++;d.setDate(d.getDate()-1);
+    } else {
+      // allow skipping today if it's still today
+      if(i===0){d.setDate(d.getDate()-1);continue;}
+      break;
+    }
+  }
+  document.getElementById('streakNum').textContent=streak;
+  document.getElementById('streakBar').style.display=streak>0?'flex':'flex';
+}
+
+// ===== QUICK EMOJI PICKER =====
+function renderEmojiPicker(){
+  const el=document.getElementById('emojiPicker');if(!el)return;
+  const td=getLogDate();const cur=(S.logs[td]||{}).quickEmoji||'';
+  el.innerHTML=QUICK_EMOJIS.map(e=>`<button class="emoji-btn${cur===e?' on':''}" onclick="pickEmoji('${e}')">${e}</button>`).join('');
+}
+function pickEmoji(em){
+  const td=getLogDate();if(!S.logs[td])S.logs[td]={};
+  S.logs[td].quickEmoji=S.logs[td].quickEmoji===em?'':em;
+  renderEmojiPicker();
+}
+
+// ===== GRATITUDE =====
+function loadGratitude(){
+  const el=document.getElementById('gratitudeArea');if(!el)return;
+  el.innerText=(S.logs[currentLogDate]||{}).gratitude||'';
+}
+
+// ===== VOICE NOTES =====
+let mediaRecorder=null,audioChunks=[],isRecording=false;
+function toggleVoiceRecording(){
+  if(isRecording){stopVoiceRecording();return;}
+  if(!navigator.mediaDevices?.getUserMedia){
+    document.getElementById('voiceStatus').textContent='not supported in this browser';return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    mediaRecorder=new MediaRecorder(stream);
+    audioChunks=[];
+    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
+    mediaRecorder.onstop=()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      const blob=new Blob(audioChunks,{type:'audio/webm'});
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const td=getLogDate();if(!S.logs[td])S.logs[td]={};
+        S.logs[td].voiceNote=ev.target.result;
+        renderVoicePlayback();
+      };
+      reader.readAsDataURL(blob);
+    };
+    mediaRecorder.start();isRecording=true;
+    document.getElementById('voiceBtn').classList.add('recording');
+    document.getElementById('voiceStatus').textContent='recording...';
+  }).catch(()=>{document.getElementById('voiceStatus').textContent='mic access denied';});
+}
+function stopVoiceRecording(){
+  if(mediaRecorder&&isRecording){mediaRecorder.stop();isRecording=false;}
+  document.getElementById('voiceBtn').classList.remove('recording');
+  document.getElementById('voiceStatus').textContent='tap to record';
+}
+function renderVoicePlayback(){
+  const el=document.getElementById('voicePlayback');if(!el)return;
+  const td=getLogDate();const vn=(S.logs[td]||{}).voiceNote;
+  if(!vn){el.innerHTML='';return;}
+  el.innerHTML=`<div class="voice-playback"><audio controls src="${vn}"></audio><button class="voice-delete" onclick="deleteVoiceNote()" title="delete">×</button></div>`;
+}
+function deleteVoiceNote(){
+  const td=getLogDate();if(S.logs[td])delete S.logs[td].voiceNote;
+  renderVoicePlayback();
+}
+
+// ===== CUSTOM SYMPTOM TAGS =====
+function renderCustomSymptoms(){
+  const el=document.getElementById('customSymptomTags');if(!el)return;
+  const td=getLogDate();const sel=(S.logs[td]||{}).customSymptoms||[];
+  const tags=S.customSymptoms||[];
+  el.innerHTML=tags.map(t=>`<span class="chip custom${sel.includes(t)?' on':''}" onclick="toggleCustomSymptom('${t}')">${t} <span style="margin-left:4px;opacity:.5;cursor:pointer;" onclick="event.stopPropagation();removeCustomSymptomDef('${t}')">×</span></span>`).join('');
+}
+function toggleCustomSymptom(tag){
+  const td=getLogDate();if(!S.logs[td])S.logs[td]={};
+  const arr=S.logs[td].customSymptoms||[];
+  const i=arr.indexOf(tag);if(i>-1)arr.splice(i,1);else arr.push(tag);
+  S.logs[td].customSymptoms=arr;
+  renderCustomSymptoms();
+}
+function addCustomTag(){
+  const inp=document.getElementById('customTagInput');
+  const val=inp.value.trim().toLowerCase();
+  if(!val||val.length>24)return;
+  if(!S.customSymptoms)S.customSymptoms=[];
+  if(!S.customSymptoms.includes(val)){S.customSymptoms.push(val);save();}
+  inp.value='';renderCustomSymptoms();
+}
+function removeCustomSymptomDef(tag){
+  if(!confirm(`remove "${tag}" from your custom tags?`))return;
+  S.customSymptoms=(S.customSymptoms||[]).filter(t=>t!==tag);
+  // also remove from all logs
+  for(const d of Object.keys(S.logs)){
+    if(S.logs[d].customSymptoms)S.logs[d].customSymptoms=S.logs[d].customSymptoms.filter(t=>t!==tag);
+  }
+  save();renderCustomSymptoms();
+}
+
+// ===== MEDICATION / SUPPLEMENT LOG =====
+function renderMeds(){
+  const el=document.getElementById('medList');if(!el)return;
+  const meds=S.meds||[];
+  const td=getLogDate();const taken=(S.logs[td]||{}).medsTaken||[];
+  if(!meds.length){el.innerHTML='<div class="ph-empty" style="font-family:var(--script);font-style:italic;font-size:13px;color:var(--mu);text-align:center;padding:.5rem 0;">no meds added yet</div>';return;}
+  el.innerHTML=meds.map((m,i)=>`<div class="med-item">
+    <div class="med-check${taken.includes(m.name)?' done':''}" onclick="toggleMedTaken('${m.name}')">${taken.includes(m.name)?'✓':''}</div>
+    <div class="med-name">${m.name}</div>
+    ${m.time?`<div class="med-time">${m.time}</div>`:''}
+    <button class="med-del" onclick="removeMed(${i})">×</button>
+  </div>`).join('');
+}
+function addMed(){
+  const name=document.getElementById('medNameInput').value.trim();
+  if(!name)return;
+  const time=document.getElementById('medTimeInput').value||'';
+  if(!S.meds)S.meds=[];
+  S.meds.push({name,time});
+  document.getElementById('medNameInput').value='';
+  document.getElementById('medTimeInput').value='';
+  save();renderMeds();
+}
+function removeMed(idx){
+  if(!confirm('remove this medication?'))return;
+  S.meds.splice(idx,1);save();renderMeds();
+}
+function toggleMedTaken(name){
+  const td=getLogDate();if(!S.logs[td])S.logs[td]={};
+  const arr=S.logs[td].medsTaken||[];
+  const i=arr.indexOf(name);if(i>-1)arr.splice(i,1);else arr.push(name);
+  S.logs[td].medsTaken=arr;
+  renderMeds();
+}
+
+// ===== PMS PREDICTION WINDOW =====
+function updatePMSBanner(){
+  const banner=document.getElementById('pmsBanner');
+  if(!banner||!S.lastStart)return;
+  const sd=new Date(S.lastStart+'T00:00:00');
+  const daysSince=Math.floor((today-sd)/86400000);
+  const doc=Math.max(1,(daysSince%S.cycleLen)+1);
+  const daysLeft=S.cycleLen-doc;
+  if(daysLeft>=0&&daysLeft<=5){
+    banner.classList.remove('hidden');
+    document.getElementById('pmsBannerText').textContent=daysLeft===0?
+      'your period may start today — take it easy ✦':
+      `PMS window — ${daysLeft} day${daysLeft>1?'s':''} until your next period`;
+  } else {banner.classList.add('hidden');}
+}
+
+// ===== PREDICTION CONFIDENCE =====
+function updatePredConf(){
+  const fill=document.getElementById('predConfFill');
+  const label=document.getElementById('predConfLabel');
+  if(!fill||!label)return;
+  const hist=(S.periodHistory||[]).length;
+  // confidence grows with number of logged cycles
+  const conf=Math.min(95,Math.round(30+hist*12));
+  fill.style.width=conf+'%';
+  const words=conf<40?'low':conf<65?'building':conf<85?'good':'strong';
+  label.textContent=`CONFIDENCE: ${conf}% (${words})`;
+}
+
+// ===== MOOD × PHASE PAIRING =====
+function renderMoodPhase(){
+  const el=document.getElementById('moodPhaseContent');if(!el)return;
+  if(!S.lastStart){el.innerHTML='<div class="ph-empty">set your cycle to see patterns</div>';return;}
+  const phaseNames=['menstrual','follicular','ovulation','luteal'];
+  const phaseMoods={menstrual:{},follicular:{},ovulation:{},luteal:{}};
+  const sd=new Date(S.lastStart+'T00:00:00');
+  for(const[d,log]of Object.entries(S.logs||{})){
+    if(!log.mood||!log.mood.length)continue;
+    const dd=new Date(d+'T00:00:00');
+    const diff=Math.floor((dd-sd)/86400000);
+    const doc=((diff%S.cycleLen)+S.cycleLen)%S.cycleLen;
+    const pi=doc<5?0:doc<13?1:doc<16?2:3;
+    log.mood.forEach(m=>{phaseMoods[phaseNames[pi]][m]=(phaseMoods[phaseNames[pi]][m]||0)+1;});
+  }
+  let html='';let hasData=false;
+  phaseNames.forEach(pn=>{
+    const sorted=Object.entries(phaseMoods[pn]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    if(sorted.length){
+      hasData=true;
+      html+=`<div class="mood-phase-row">
+        <div class="mood-phase-phase">${pn.toUpperCase()}</div>
+        <div class="mood-phase-moods">${sorted.map(([m,c])=>m).join(', ')}</div>
+      </div>`;
+    }
+  });
+  el.innerHTML=hasData?html:'<div class="ph-empty">log more entries to see patterns</div>';
+}
+
+// ===== MOOD WORD CLOUD =====
+function renderWordCloud(){
+  const el=document.getElementById('wordCloud');if(!el)return;
+  const counts={};
+  for(const log of Object.values(S.logs||{})){
+    if(!log.mood)continue;
+    log.mood.forEach(m=>{counts[m]=(counts[m]||0)+1;});
+  }
+  const entries=Object.entries(counts);
+  if(!entries.length){el.innerHTML='<span style="font-family:var(--script);font-style:italic;font-size:13px;color:var(--mu);">log moods to generate</span>';return;}
+  const max=Math.max(...entries.map(e=>e[1]));
+  el.innerHTML=entries.sort(()=>Math.random()-.5).map(([word,count])=>{
+    const size=12+Math.round((count/max)*22);
+    const opacity=0.4+0.6*(count/max);
+    return `<span class="word-cloud-word" style="font-size:${size}px;opacity:${opacity};">${word}</span>`;
+  }).join(' ');
+}
+
+// ===== BACKGROUND IMAGE =====
+function uploadBgImage(){document.getElementById('bgFileInput').click();}
+function handleBgUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    S.bgImage=ev.target.result;
+    applyBgImage();save();
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+function clearBgImage(){S.bgImage='';applyBgImage();save();}
+function applyBgImage(){
+  const clearBtn=document.getElementById('bgClearBtn');
+  if(S.bgImage){
+    document.body.style.backgroundImage=`url(${S.bgImage})`;
+    document.body.style.backgroundSize='cover';
+    document.body.style.backgroundPosition='center';
+    document.body.style.backgroundAttachment='fixed';
+    if(clearBtn)clearBtn.style.display='inline-block';
+  } else {
+    document.body.style.backgroundImage='';
+    document.body.style.backgroundSize='';
+    document.body.style.backgroundPosition='';
+    document.body.style.backgroundAttachment='';
+    updateGrad();
+    if(clearBtn)clearBtn.style.display='none';
+  }
+}
+
+// ===== SLEEP × CYCLE CHART =====
+function renderSleepCycleChart(){
+  const canvas=document.getElementById('iChart');
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  const a1=cs('--a1'),ph1=cs('--ph1'),ph2=cs('--ph2'),ph3=cs('--ph3'),ph4=cs('--ph4'),mu=cs('--mu');
+  const gc=S.mode==='dark'?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.04)';
+  const days=getLast30(),labels=days.map(d=>d.slice(5));
+  if(!S.lastStart){
+    chartInst=new Chart(canvas,{type:'line',data:{labels,datasets:[{label:'sleep',data:days.map(d=>(S.logs[d]||{}).sleep||null),borderColor:a1,backgroundColor:a1+'33',tension:.4,pointRadius:4,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:mu,font:{family:"'JetBrains Mono'",size:10,weight:'300'}}}},scales:{x:{ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9},maxTicksLimit:8},grid:{color:gc}},y:{ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9}},grid:{color:gc}}}}});
+    return;
+  }
+  const sd=new Date(S.lastStart+'T00:00:00');
+  const phaseColors=days.map(d=>{
+    const dd=new Date(d+'T00:00:00');
+    const diff=Math.floor((dd-sd)/86400000);
+    const doc=((diff%S.cycleLen)+S.cycleLen)%S.cycleLen;
+    return doc<5?ph1:doc<13?ph2:doc<16?ph3:ph4;
+  });
+  chartInst=new Chart(canvas,{type:'bar',data:{labels,datasets:[{label:'sleep quality',data:days.map(d=>(S.logs[d]||{}).sleep||null),backgroundColor:phaseColors.map(c=>c+'88'),borderColor:phaseColors,borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:mu,font:{family:"'JetBrains Mono'",size:10,weight:'300'}}}},scales:{x:{ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9},maxTicksLimit:8},grid:{color:gc}},y:{min:0,max:5,ticks:{color:mu,font:{family:"'JetBrains Mono'",size:9},stepSize:1},grid:{color:gc}}}}});
+}
+
 function init(){
   loadS();
   renderPals();
   setMode(S.mode||'dark');
   updateGreeting();
+  setAffirmation();
+  initStarfield();
+  initCursorSparkles();
   document.getElementById('nameInput').addEventListener('input',updateNamePreview);
   document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')saveName();if(e.key==='Escape')closeNameModal();});
   document.getElementById('gradSlider').value=S.gradVal||50;
+  document.getElementById('ambVol').value=S.ambientVol||50;
   updateGrad();
   if(S.lastStart){document.getElementById('pS').value=S.lastStart;const sp=document.getElementById('dspS');sp.textContent=fmtDate(S.lastStart);sp.classList.remove('ph');}
   if(S.lastEnd){document.getElementById('pE').value=S.lastEnd;const ep=document.getElementById('dspE');ep.textContent=fmtDate(S.lastEnd);ep.classList.remove('ph');}
@@ -1714,7 +2473,17 @@ function init(){
   updateStats();renderHistory();renderPastEntries();
   refreshLogUI();
   renderChart('mood');
+  calcStreak();
+  renderMoodPhase();
+  renderWordCloud();
+  updatePMSBanner();
+  updatePredConf();
   vbInit();
+  if(S.bgImage)applyBgImage();
+  // restore ambient sound preference (don't auto-play, just highlight)
+  if(S.ambientSound&&S.ambientSound!=='off'){
+    document.querySelector(`.amb-option[data-sound="${S.ambientSound}"]`)?.classList.add('on');
+  }
   setInterval(updateGreeting, 60000);
 }
 init();
